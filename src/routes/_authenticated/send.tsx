@@ -97,7 +97,7 @@ function SendPage() {
     const { error } = await supabase.rpc("send_money", {
       recipient_handle: recipient.paylink_id,
       transfer_amount: n,
-      transfer_note: note || null,
+      transfer_note: note || "",
     });
     setLoading(false);
     if (error) {
