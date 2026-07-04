@@ -79,13 +79,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "PayLink — Send, receive, and manage money" },
+      { title: "PayLink — Send, receive, and manage money instantly" },
       {
         name: "description",
         content:
           "PayLink is a modern digital wallet. Send and receive money instantly, track transactions, and manage your finances in one place.",
       },
-      { property: "og:title", content: "PayLink — Send, receive, and manage money" },
+      { property: "og:title", content: "PayLink — Send, receive, and manage money instantly" },
       {
         property: "og:description",
         content:
@@ -93,6 +93,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "PayLink — Send, receive, and manage money instantly" },
+      { name: "description", content: "PayLink is a modern digital wallet. Send money in seconds with @handles, request payments, top up your balance, and track every transaction." },
+      { property: "og:description", content: "PayLink is a modern digital wallet. Send money in seconds with @handles, request payments, top up your balance, and track every transaction." },
+      { name: "twitter:description", content: "PayLink is a modern digital wallet. Send money in seconds with @handles, request payments, top up your balance, and track every transaction." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/d286963c-a00d-47a5-97fa-3f73d9232655/id-preview-b44c1edb--0949efc0-4101-4091-9d08-5df36ab1eb7a.lovable.app-1783125688858.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/d286963c-a00d-47a5-97fa-3f73d9232655/id-preview-b44c1edb--0949efc0-4101-4091-9d08-5df36ab1eb7a.lovable.app-1783125688858.png" },
     ],
     links: [
       {
