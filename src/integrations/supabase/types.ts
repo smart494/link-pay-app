@@ -14,16 +14,238 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      linked_accounts: {
+        Row: {
+          account_name: string
+          account_type: Database["public"]["Enums"]["account_type"]
+          balance: number | null
+          created_at: string
+          id: string
+          is_primary: boolean
+          masked_number: string
+          user_id: string
+        }
+        Insert: {
+          account_name: string
+          account_type: Database["public"]["Enums"]["account_type"]
+          balance?: number | null
+          created_at?: string
+          id?: string
+          is_primary?: boolean
+          masked_number: string
+          user_id: string
+        }
+        Update: {
+          account_name?: string
+          account_type?: Database["public"]["Enums"]["account_type"]
+          balance?: number | null
+          created_at?: string
+          id?: string
+          is_primary?: boolean
+          masked_number?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      payment_requests: {
+        Row: {
+          amount: number | null
+          created_at: string
+          id: string
+          note: string | null
+          requester_id: string
+          status: Database["public"]["Enums"]["request_status"]
+        }
+        Insert: {
+          amount?: number | null
+          created_at?: string
+          id?: string
+          note?: string | null
+          requester_id: string
+          status?: Database["public"]["Enums"]["request_status"]
+        }
+        Update: {
+          amount?: number | null
+          created_at?: string
+          id?: string
+          note?: string | null
+          requester_id?: string
+          status?: Database["public"]["Enums"]["request_status"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "payment_requests_requester_id_fkey"
+            columns: ["requester_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string
+          email: string | null
+          full_name: string
+          id: string
+          is_verified: boolean
+          paylink_id: string
+          phone: string | null
+          updated_at: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string
+          email?: string | null
+          full_name?: string
+          id: string
+          is_verified?: boolean
+          paylink_id: string
+          phone?: string | null
+          updated_at?: string
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string
+          email?: string | null
+          full_name?: string
+          id?: string
+          is_verified?: boolean
+          paylink_id?: string
+          phone?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      settings: {
+        Row: {
+          biometric_enabled: boolean
+          currency_preference: string
+          dark_mode: boolean
+          id: string
+          language: string
+          notification_preferences: Json
+          two_factor_enabled: boolean
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          biometric_enabled?: boolean
+          currency_preference?: string
+          dark_mode?: boolean
+          id?: string
+          language?: string
+          notification_preferences?: Json
+          two_factor_enabled?: boolean
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          biometric_enabled?: boolean
+          currency_preference?: string
+          dark_mode?: boolean
+          id?: string
+          language?: string
+          notification_preferences?: Json
+          two_factor_enabled?: boolean
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      transactions: {
+        Row: {
+          amount: number
+          created_at: string
+          id: string
+          note: string | null
+          recipient_id: string | null
+          sender_id: string | null
+          status: Database["public"]["Enums"]["transaction_status"]
+          type: Database["public"]["Enums"]["transaction_type"]
+        }
+        Insert: {
+          amount: number
+          created_at?: string
+          id?: string
+          note?: string | null
+          recipient_id?: string | null
+          sender_id?: string | null
+          status?: Database["public"]["Enums"]["transaction_status"]
+          type: Database["public"]["Enums"]["transaction_type"]
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          id?: string
+          note?: string | null
+          recipient_id?: string | null
+          sender_id?: string | null
+          status?: Database["public"]["Enums"]["transaction_status"]
+          type?: Database["public"]["Enums"]["transaction_type"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "transactions_recipient_id_fkey"
+            columns: ["recipient_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "transactions_sender_id_fkey"
+            columns: ["sender_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      wallets: {
+        Row: {
+          balance: number
+          currency: string
+          id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          balance?: number
+          currency?: string
+          id?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          balance?: number
+          currency?: string
+          id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      send_money: {
+        Args: {
+          recipient_handle: string
+          transfer_amount: number
+          transfer_note: string
+        }
+        Returns: string
+      }
+      top_up: { Args: { top_amount: number }; Returns: string }
     }
     Enums: {
-      [_ in never]: never
+      account_type: "bank" | "card"
+      request_status: "open" | "paid" | "expired" | "cancelled"
+      transaction_status: "pending" | "completed" | "failed"
+      transaction_type: "transfer" | "top_up" | "withdrawal"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +372,11 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      account_type: ["bank", "card"],
+      request_status: ["open", "paid", "expired", "cancelled"],
+      transaction_status: ["pending", "completed", "failed"],
+      transaction_type: ["transfer", "top_up", "withdrawal"],
+    },
   },
 } as const
